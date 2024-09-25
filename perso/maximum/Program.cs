@@ -21,7 +21,11 @@ foreach (Player p in players)
     }
 }
 
-Console.WriteLine($"Le plus agé est {elder.Name} qui a {elder.Age} ans");
+Player p1 = players[0].Age > players[1].Age ? players[0] : players[1]; 
+Player p2 = players[2].Age < players[3].Age ? players[3] : players[4];
+Player p3 = p1.Age > p2.Age ? p1 : p2;
+
+Console.WriteLine($"Le plus agé est {p3.Name} qui a {p3.Age} ans");
 
 Console.ReadKey();
 
