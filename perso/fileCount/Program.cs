@@ -14,33 +14,23 @@ class Program
             return;
         }
 
-        CountResult result = CountFileAndDir(dossierPath);
+        var result = CountFileAndDir(dossierPath);
         Console.WriteLine($"Nombre de fichiers : {result.FileCount}");
         Console.WriteLine($"Nombre de dossiers : {result.DirCount}");
     }
 
-    static CountResult CountFileAndDir(string repo)
+    static (int FileCount, int DirCount) CountFileAndDir(string repo)
     {
-        CountResult result = new CountResult();
+        int fileCount = Directory.GetFiles(repo).Length;
+        int dirCount = Directory.GetDirectories(repo).Length;
 
-        result.FileCount += Directory.GetFiles(repo).Length;
-
-        string[] dirs = Directory.GetDirectories(repo);
-        result.DirCount += dirs.Length;
-
-        foreach (string subDir in dirs)
+        foreach (string subDir in Directory.GetDirectories(repo))
         {
-            CountResult subResult = CountFileAndDir(subDir);
-            result.FileCount += subResult.FileCount;
-            result.DirCount += subResult.DirCount;
+            var subResult = CountFileAndDir(subDir);
+            fileCount += subResult.FileCount;
+            dirCount += subResult.DirCount;
         }
 
-        return result;
-    }
-
-    class CountResult
-    {
-        public int FileCount { get; set; }
-        public int DirCount { get; set; }
+        return (fileCount, dirCount);
     }
 }
